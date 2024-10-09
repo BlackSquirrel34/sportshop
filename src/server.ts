@@ -1,8 +1,9 @@
 import { createServer } from "http";
 import express, { Express } from "express";
 import helmet from "helmet";
-
-const port = 5000;
+import { getConfig } from "./config";
+// get port from config, with 5000 as fallback
+const port = getConfig("http:port", 5000);
 const expressApp: Express = express();
 
 expressApp.use(helmet());
