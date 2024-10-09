@@ -4,11 +4,15 @@
 // for example, are objects whose type matches the expectations of the rest of the application. 
 // This approach doesn’t require conversion functions, but it can require some effort to override
 // the default behavior of the ORM package.
-import { Category, Product, Supplier } from "./catalog_models";
+// Note: This isn’t an issue if you are using an object database, such as MongoDB, 
+// or if you are writing native SQL queries without using an ORM package.
+import { Category, Product, Supplier, ProductQueryParameters,
+    ProductQueryResult } from "./catalog_models";
 
 // defines methods to query and store objects that 
 // defines methods to query and store objects that implement the Product, Category, and Supplier interfaces.implement the Product, Category, and Supplier interfaces.
 export interface CatalogRepository {
+    getProducts(params?: ProductQueryParameters): Promise<ProductQueryResult>;
     getProducts(): Promise<Product[]>;
     storeProduct(p: Product): Promise<Product>;
     getCategories() : Promise<Category[]>;
