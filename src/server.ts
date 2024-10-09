@@ -4,6 +4,8 @@ import helmet from "helmet";
 import { getConfig } from "./config";
 import { createRoutes } from "./routes";
 import { createTemplates } from "./helpers";
+import { createErrorHandlers } from "./errors";
+
 // get port from config, with 5000 as fallback
 const port = getConfig("http:port", 5000);
 const expressApp: Express = express();
@@ -14,6 +16,8 @@ expressApp.use(express.urlencoded({extended: true}))
 expressApp.use(express.static("node_modules/bootstrap/dist"));
 createTemplates(expressApp);
 createRoutes(expressApp);
+createErrorHandlers(expressApp);
+
 const server = createServer(expressApp);
 
 server.listen(port,
