@@ -1,6 +1,7 @@
 import { CategoryModel, ProductModel, SupplierModel } from "./models";
 import { BaseRepo, Constructor } from "./core"
 import { ProductQueryParameters } from "../catalog_models";
+import { Op } from "sequelize";
 export function AddQueries<TBase extends Constructor<BaseRepo>>(Base: TBase) {
     return class extends Base {
    
@@ -10,6 +11,17 @@ export function AddQueries<TBase extends Constructor<BaseRepo>>(Base: TBase) {
                 opts.limit = params?.pageSize,
                 opts.offset = (params.page -1) * params.pageSize               
             }
+            if(params?.searchTerm) {
+                const searchOp = { [Op.like]: "%" + params.searchTerm + "%"};
+                opts.where = {
+                    [Op.or]: { name: searchOp, description: searchOp }
+                }
+            }
+            if (params?.category) {
+                opts.where = {
+                    ...opts.where,  categoryId: params.category
+                }
+            }
             const result = await ProductModel.findAndCountAll({               
                 include: [
                     {model: SupplierModel, as: "supplier" },
@@ -17,7 +29,8 @@ export function AddQueries<TBase extends Constructor<BaseRepo>>(Base: TBase) {
                 raw: true, nest: true,
                 ...opts
             });              
-            return { products: result.rows, totalCount: result.count };
+            const categories = await this.getCategories();
+            return { products: result.rows, totalCount: result.count, categories };
         }
         getCategories() {
             return CategoryModel.findAll({raw: true, nest: true})

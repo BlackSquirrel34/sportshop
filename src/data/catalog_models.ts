@@ -26,10 +26,13 @@ export interface Supplier {
 export interface ProductQueryParameters {
     pageSize?: number;
     page?: number;
+    category?: number;
+    searchTerm?: string;
 }
 // describes the response the repository will produce, which contains the page of data and 
 // the total number of stored items. 
 export interface ProductQueryResult {
     products: Product[];
     totalCount: number;
+    categories: Category[];
 }

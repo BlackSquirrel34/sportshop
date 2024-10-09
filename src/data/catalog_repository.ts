@@ -9,14 +9,19 @@
 import { Category, Product, Supplier, ProductQueryParameters,
     ProductQueryResult } from "./catalog_models";
 
-// defines methods to query and store objects that 
-// defines methods to query and store objects that implement the Product, Category, and Supplier interfaces.implement the Product, Category, and Supplier interfaces.
 export interface CatalogRepository {
+
     getProducts(params?: ProductQueryParameters): Promise<ProductQueryResult>;
-    getProducts(): Promise<Product[]>;
+
+    getProductDetails(ids: number[]): Promise<Product[]>;
+
     storeProduct(p: Product): Promise<Product>;
+
     getCategories() : Promise<Category[]>;
+
     storeCategory(c: Category): Promise<Category>;
+
     getSuppliers(): Promise<Supplier[]>;
+
     storeSupplier(s: Supplier): Promise<Supplier>;
 }
