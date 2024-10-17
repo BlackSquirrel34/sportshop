@@ -10,7 +10,7 @@ export const createCatalogRoutes = (app: Express) => {
             searchTerm, category});
         resp.render("index", { ...res, page, pageSize,
             pageCount: Math.ceil(res.totalCount / (pageSize ?? 1)),
-            searchTerm, category
+            searchTerm, category, show_cart: true
         });
     });
 }
